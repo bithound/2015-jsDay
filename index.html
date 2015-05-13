@@ -275,12 +275,12 @@ it up takes <em>work</em>.
 <pre>
 |-- Vagrantfile
 |-- Dockerfile
-|-- app 
-|-- bin
+|-- <span style="color: red">app</span>
+|-- <em>bin</em>
 |   |-- start.sh
 |   +-- stop.sh
 |-- etc
-+-- scripts
++-- <em>scripts</em>
     |-- provision.sh
     |-- deploy.sh
     +-- scripts.sh
@@ -299,16 +299,16 @@ We include the app as a submodule.
 |-- Vagrantfile
 |-- Dockerfile
 |-- app
-|   |-- bin
+|   |-- <em>bin</em>
 |   |   |-- start.sh
 |   |   +-- stop.sh
-|   +-- scripts
+|   +-- <em>scripts</em>
 |       +-- migrate.sh 
-|-- bin
+|-- <em>bin</em>
 |   |-- start.sh
 |   +-- stop.sh
 |-- etc
-+-- scripts
++-- <em>scripts</em>
     |-- provision.sh
     |-- deploy.sh
     +-- scripts.sh

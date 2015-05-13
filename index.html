@@ -64,37 +64,47 @@
           </section>
    
           <section data-background="img/symbol_reversed.svg" data-background-size="70%" data-background-position="120%">
-            <br>
+            <h3>Missing the point...</h3>
+            <img src="img/devopsjob.png">
             <aside class="notes">
 I've heard some people describe DevOps as 'sysadmins who program'.  And that's
-not entirely true.  Sysadmins have been programming since dinosaurs ruled the
-machine room.  Who do you think uses languages like bash or perl or awk?
+not entirely true.  This is from a random devops job posting I found on craigslist.
+            </aside>
+          </section>
+ 
+          <section data-background="img/symbol_reversed.svg" data-background-size="70%" data-background-position="120%">
+            <h3>DevOps has been around since 1987?</h3>
+            <img src="img/perl.png">
+            <aside class="notes">
+Sysadmins have been programming since dinosaurs roamed the machine room.  Who do you think uses languages like bash or perl or awk?
+Either, DevOps has been around since 1987, or it means something more.
             </aside>
           </section>
 
           <section data-background="img/symbol_reversed.svg" data-background-size="70%" data-background-position="120%">
-            <br>
+            <img src="img/catalog.png">
             <aside class="notes">
 In the 'bad old days', a dev team would finish up, toss a product over the wall to the systems team 
 who then would then have the curse of deploying it.
+<br>
+Kind of like acme.  Poor Wile E Coyote never knows what he's <em>really</em> going to get next.
             </aside>
           </section>
 
-          <section data-background="img/symbol_reversed.svg" data-background-size="70%" data-background-position="120%">
-            <br>
+          <section data-background="img/dark.gif">
             <aside class="notes">
 So I guess what I'm trying to say, is that as a DevOps guy, if a dev team comes
 to me with a product and says 'deploy this!', it's already too late.  We're
 going to miss the deadline.  This is especially true for node.js/io.js.
 Apache/nginx support for js is pretty primitive, and OS distributions lag
 badly.
-
+<br>
 As somebody with fifteen years of sysadmin experience, I <em>hate</em> running
 software that's not well maintained upstream.
-
+<br>
 The goal of DevOps is to get ahead of mere 'sysadmin' concerns.  And that's not
 just a matter of applying developer tools to operations; it's also important to
-bring operations tools and culture into the developer world.
+bring operations tools and culture into the developer world, early in the development process.
             </aside>
           </section>
         </section>
@@ -103,18 +113,23 @@ bring operations tools and culture into the developer world.
         <section>
           <section data-background="img/symbol_reversed.svg" data-background-size="70%" data-background-position="120%">
             <h2>Tools</h2>
+            <aside class="notes">
+We've all gone to a talk about vagrant that ends in "And now you never have to say 'but it runs on my machine'".
+<br>
+This is not that talk.
+            </aside>
           </section>
 
           <section data-background="img/symbol_reversed.svg" data-background-size="70%" data-background-position="120%">
             <img src="img/acme.jpg">
             <aside class="notes">
-Bash is the Cowbell of DevOps
-<br>
 Really, what you want in a virtualizer from Ops perspective is really the same thing you want in any other software 
 There's nothing in this talk that couldn't be done in puppet.  Or powershell.  Or as grunt scripts.
 bitHound tends to be a mac/linux shop, and bash is a cheap / fast / universal tool for us.
 <br>
 I like using tools that let me duct tape together other tools.  So bash it is.
+<br>
+Bash is the Cowbell of DevOps
             </aside>
           </section>
 
@@ -147,6 +162,7 @@ There is no tool that "gives you devops".  However, vagrant and bash are a good 
               <li>Docker</li>
               <li>VirtualBox</li>
               <li>VMware</li>
+              <li>AWS?</li>
             </ul>
 
             <aside class="notes">
@@ -168,7 +184,9 @@ Define slow.
 <br>
 But 'slow' is a pretty vague term.  Is it CPU, Network, Storage, Memory constraint.
 <br>
-Ultimately, Speed isn't the point.  Consistency and convention are the points.
+I'm going to talk about speed here, but it's a little like talking about the
+top speed of a family minivan -- it's missing the point.  Ultimately, Speed
+isn't the point.  Consistency and convention are the points.
             </aside>
           </section>
 
@@ -176,7 +194,7 @@ Ultimately, Speed isn't the point.  Consistency and convention are the points.
 <img src="img/64kb.png" alt="">
 <a class="small" href="http://mitchellh.com/comparing-filesystem-performance-in-virtual-machines">http://mitchellh.com/comparing-filesystem-performance-in-virtual-machines</a>
             <aside class="notes">
-Bigger is better.  So here you can see that for small files, NFS outperforms VirtualBox native filesystems.
+Bigger is better.  So here you can see that for small files, NFS outperforms VirtualBox native filesystems.  And that's actually operating system specific.  In our in-house tests, we found we were getting seeing linear performance with file size on linux, and roughly constant time with file size on OS X.
             </aside>
           </section>
 
@@ -185,15 +203,16 @@ Bigger is better.  So here you can see that for small files, NFS outperforms Vir
 <a class="small" href="http://mitchellh.com/comparing-filesystem-performance-in-virtual-machines">http://mitchellh.com/comparing-filesystem-performance-in-virtual-machines</a>
 
             <aside class="notes">
-But not when it comes to writes.  
+But NFS doesn't outperform native when it comes to writes.  
 So running a virtualized filestem, NFS, or through your virtualizer to the host VM all have different types of performance.
-
+<br>
 Benchmark, benchmark, benchmark.  Your app is a unique snowflake.
 For example, we have our code mounted in via NFS, but our app's scratch space is on a virtual HD that is not available to the host.
             </aside>
           </section>
 
           <section data-background="img/symbol_reversed.svg" data-background-size="70%" data-background-position="120%">
+            <h3>Some tasks can run on the host</h3>
 <pre>
 #!/bin/bash
 nodemon \
@@ -205,11 +224,12 @@ Also, it's possible to work around some of these issues.  For example, we know f
 That makes it things like <code>nodemon</code> also very slow.
 
 But we don't have to run it inside the VM.  It's not part of our production setup!  There's no reason we can't take
-that and run it in the host environment.  I'll get into where we'd stash this in the next session.
+that and run it in the host environment.  I'll get into where we'd stash this in the next section.
             </aside>
           </section>
 
           <section data-background="img/symbol_reversed.svg" data-background-size="70%" data-background-position="120%">
+            <h3>Tweak your virtualizer</h3>
 <pre>
 Vagrant.configure(2) do |config|
 
@@ -230,7 +250,6 @@ which one -- as it is on bare metal.  But keep in mind, you're almost certainly 
 environment.  Unless you own your own hardware.
             </aside>
           </section>
-
         </section>
 
         <section>
@@ -245,12 +264,14 @@ Not if you have to run scripts inside the environment.
             <aside class="notes">
 If your app is virtualized, as a dev, you are (naturally) separated from your running code.
 Vagrant actually gets us about halfway there -- mounting in <code>/vagrant</code> by default
-was a brilliant design decision.  You can do that in every other virutalizer, too.  But setting
+was a brilliant design decision.  It effectively uncouples your editing environment from your 
+execution environment.  You can do that in every other virutalizer, too.  But setting
 it up takes <em>work</em>.
             </aside>
           </section>
 
           <section data-background="img/symbol_reversed.svg" data-background-size="70%" data-background-position="120%">
+            <h3>Lay out your project</h3>
 <pre>
 |-- Vagrantfile
 |-- Dockerfile
@@ -273,6 +294,7 @@ We include the app as a submodule.
           </section>
 
           <section data-background="img/symbol_reversed.svg" data-background-size="70%" data-background-position="120%">
+            <h3>Lay out your project</h3>
 <pre>
 |-- Vagrantfile
 |-- Dockerfile
@@ -305,6 +327,7 @@ interact from inside or outside the guest.
           </section>
 
           <section data-background="img/symbol_reversed.svg" data-background-size="70%" data-background-position="120%">
+            <h3>Starting and stopping</h3>
 <pre>
 #!/bin/bash
 
@@ -317,6 +340,7 @@ So here's a really naive way of starting an app in a vagrant box.  This runs, bu
           </section>
 
           <section data-background="img/symbol_reversed.svg" data-background-size="70%" data-background-position="120%">
+            <h3>Starting and stopping</h3>
 <pre>
 #!/bin/bash
 
@@ -337,6 +361,7 @@ So we can push it into the background, either on the guest or the host, but we d
 
 
           <section data-background="img/symbol_reversed.svg" data-background-size="70%" data-background-position="120%">
+            <h3>Starting and stopping</h3>
 <pre>
 #!/bin/bash
 
@@ -351,7 +376,7 @@ from the host.
           </section>
 
           <section data-background="img/symbol_reversed.svg" data-background-size="70%" data-background-position="120%">
-            <br>
+            <h3>Passing parameters</h3>
 <pre>
 #!/bin/bash
 
@@ -368,6 +393,10 @@ $* is just the parameter list that this program has been called with itself.
 
           <section data-background="img/symbol_reversed.svg" data-background-size="70%" data-background-position="120%">
             <img src="img/ssh.gif">
+            <aside class="notes">
+So that call took about three seconds to connect to the vagrant guest.  And this varies.  Docker is pretty much 
+instantaneous.  Most of our tasks are CPU bound, so this usually isn't a critical amount of overhead.
+            </aside>
           </section>
 
           <section data-background="img/symbol_reversed.svg" data-background-size="70%" data-background-position="120%">
@@ -405,6 +434,7 @@ in which your vagrant environment differs from your production environment.
           </section>
 
           <section data-background="img/symbol_reversed.svg" data-background-size="70%" data-background-position="120%">
+            <h3>Multiple servers</h3>
 <pre>
 Vagrant.configure(2) do |config|
   config.vm.define "app" do |app|
@@ -434,6 +464,7 @@ right now allow you define multiple VMs and private networks.
 
 
           <section data-background="img/symbol_reversed.svg" data-background-size="70%" data-background-position="120%">
+            <h3>Multiple servers</h3>
 <pre>
 #!/bin/bash
 
@@ -448,6 +479,46 @@ vagrant ssh worker2 --command "cd /vagrant/app; forever --uid 'worker' -a start 
             </aside>
           </section>
 
+          <section data-background="img/symbol_reversed.svg" data-background-size="70%" data-background-position="120%">
+            <h3>SSL</h3>
+<pre>
+## Do we need fake SSL keys?
+ssl_pem=/etc/ssl/private/www_bithound_io.pem
+ssl_key=/etc/ssl/private/www_bithound_io.key
+ssl_crt=/etc/ssl/private/www_bithound_io.crt
+
+if [ ! -e $ssl_pem ]; then
+  # No PEM.
+  if [ ! -e $ssl_key ] || [ ! -e $ssl_crt ]; then
+    # No keys.
+    country=CA
+    state=Ontario
+    locality=Kitchener
+    organization=bitHound
+    name=app.bithound.io
+
+    openssl req -x509 \
+      -newkey rsa:2048 \
+      -subj "/C=$country/ST=$state/L=$locality/O=$organization/CN=$name" \
+      -keyout $ssl_key \
+      -out $ssl_crt \
+      -days 90 \
+      -nodes
+  fi
+
+  cat $ssl_crt $ssl_key &gt; $ssl_pem
+fi
+</pre>
+            <aside class="notes">
+We also deliver everything over SSL.  So we do that on our dev boxes too.  We autogenerate
+SSL certs if there isn't one present already.
+<br>
+This is useful in other places too.  We use Amazon S3 for file storage in production.
+We do static analysis of code and generate a lot of data.  In development, we use an S3 simulater
+called 's3rver' to stand in for S3.  Cause it's cheaper to not send that data out
+if we don't have to.
+            </aside>
+          </section>
         </section>
 
         <section>
@@ -457,11 +528,13 @@ vagrant ssh worker2 --command "cd /vagrant/app; forever --uid 'worker' -a start 
 
           
           <section data-background="img/paint.gif">
+            <aside class="notes">
+The learning curve for any given configuration management tool is massive.
+            </aside>
           </section>
 
           <section data-background="img/symbol_reversed.svg" data-background-size="70%" data-background-position="120%">
-            Provisioners
-            <br>
+            <h3>Provisioners</h3>
             <ul>
               <li>Chef</li>
               <li>Puppet</li>
@@ -469,13 +542,16 @@ vagrant ssh worker2 --command "cd /vagrant/app; forever --uid 'worker' -a start 
               <li>CFEngine</li>
               <li>Cobbler</li>
               <li>SaltStack</li>
+              <li>...</li>
             </ul>
             <aside class="notes">
 Chef, Puppet or Ansible are all pretty heavy for small projects.
+If you're already using one, great!  Keep it!  Don't change unless there's a damn good reason.
             </aside>
           </section>
 
           <section data-background="img/symbol_reversed.svg" data-background-size="70%" data-background-position="120%">
+            <h3>Provisioner features</h3>
             <ul>
               <li>Configuration Management</li>
               <li>Orchestration</li>
@@ -495,6 +571,7 @@ auditing.  Just nuke it from orbit, and create a new one.
           </section>
 
           <section data-background="img/symbol_reversed.svg" data-background-size="70%" data-background-position="120%">
+            <h3>Provisioner features</h3>
             <ul>
               <li>Configuration Management</li>
               <li><strike>Orchestration</strike></li>
@@ -508,7 +585,7 @@ Don't try to modify config files in place.  Just check 'em in, and copy them int
           </section>
 
           <section data-background="img/symbol_reversed.svg" data-background-size="70%" data-background-position="120%">
-            <br>
+            <h3>Provisioning with bash</h3>
 <pre>
 #!/bin/bash 
 BASE='/vagrant'
@@ -517,6 +594,7 @@ apt-get update
 apt-get install -y build-essential curl git mongodb-clients nginx tmux vim
 
 cp "$BASE/etc/nginx/nginx.conf" /etc/nginx/nginx.conf
+/etc/init.d/nginx restart
 
 npm -g install forever
 npm -g install nodemon
@@ -524,11 +602,18 @@ npm -g install nodemon
 
             <aside class="notes">
 Here's a really early version of our provision script.
+<br>
+We don't need to template our nginx config because it's pretty simple.  Chef recipes
+and puppet rules tend to be written to be flexible and generic.  And that's 
+great if your maintaining hundreds of servers each configured slightly differently.
+<br>
+If you want to configure your servers <em>identically</em> just blind copying a file
+is much simpler.
             </aside>
           </section>
 
           <section data-background="img/symbol_reversed.svg" data-background-size="70%" data-background-position="120%">
-            <br>
+            <h3>Provisioning with bash</h3>
 <pre>
 Vagrant.configure(2) do |config|
   config.vm.provision "shell", path: "scripts/provision.sh"
@@ -536,11 +621,28 @@ end
 </pre>
 
             <aside class="notes">
-And then calling a shell provisioner is really difficult.
+And then calling a shell provisioner is really simple.
+<br>
 In real life, we have parameters that we can pass to our provisioning script.  We can tell it
 what user our app will run as, and what the source and destination paths actually are.
-
+<br>
 We actually use the same scripts to provision our dev machines and our production machines.
+            </aside>
+          </section>
+          <section data-background="img/symbol_reversed.svg" data-background-size="70%" data-background-position="120%">
+            <h3>Provisioning with bash</h3>
+<pre>
+FROM ubuntu:1404
+
+RUN scripts/provision.sh
+ADD app /app
+RUN cd /app &amp;&amp; npm install
+
+ENTRYPOINT ["/app/scripts/entrypoint.sh"]
+</pre>
+
+            <aside class="notes">
+Incidently, then you can use the same bash file with Docker.
             </aside>
           </section>
         </section>
@@ -575,11 +677,12 @@ the benefits of virtualization.
               <li>Data loss.</li>
             </ul>
             <aside class="notes">
-Just because you've built a virtual dev environment, doesn't mean it will stay
-You may have to push your developers to remain in sync.
+You may have to push your developers to remain in sync.  They'll probably push back.
 
 Why don't people stay in sync?  It takes time.  If your provisioning process takes two hours, that's two hours of lost
 productivity.  If it takes any longer than a coffee break, developers will resist reprovisioning.
+
+Even if it _only_ takes a coffee break, there still will be resistance.
             </aside>
           </section>
 
@@ -591,20 +694,59 @@ productivity.  If it takes any longer than a coffee break, developers will resis
               <li><strike>Data loss.</strike></li>
             </ul>
             <aside class="notes">
-We've already talked about data loss...  
+We've already talked about data loss...  Anything that affects the state of the guest should be checked in.
+Fixtures, for example.  It's also possible to copy database dumps in and out of a VM.
+<br>
+I haven't had anybody do this to me about production data yet, it's usually about reproducing test cases.
+So 'build fixtures' is usually a reasonable answer.
             </aside>
           </section>
 
 
           <section data-background="img/symbol_reversed.svg" data-background-size="70%" data-background-position="120%">
-            <br>
-Provision of a customized box vs a generic box.
+            <h3>Improving provision speed</h3>
+            <ul>
+              <li>Examine your provisioner.</li>
+              <li>Package your code.</li>
+              <li>Create custom images.</li>
+            </ul>
 
-Again, benchmark!
+            <aside class="notes">
+Again, benchmark!<br>
+We've tested out building custom base boxes in Varnish, and thus far it doesn't seem to help; 
+We're trading off the time it takes to provision the box against the time it takes to download.
+            </aside>
           </section>
 
           <section data-background="img/symbol_reversed.svg" data-background-size="70%" data-background-position="120%">
+            <h3>Reducing failures</h3>
+            <ul>
+              <li>Eat your own dogfood.</li>
+              <li>Provision regularly.</li>
+              <li>Watch for bitrot.</li>
+            </ul>
+
+            <aside class="notes">
+I maintain our dev environment.  So whenever I make a new branch, I reprovision.  That's at least once a
+day, usually two or three times.  Part of the job; that could also very easily be automated.
+<br>
+I have worked with projects where the vagrantfile is poorly maintained.  I've even seen some that ship
+with a readme file that suggests you run the vagrant file, and then gives a list of manual tasks you
+need to complete provisioning.
+<br>
+Devs need to trust their dev environment.
+            </aside>
+          </section>
+
+          <section data-background="img/symbol_reversed.svg" data-background-size="70%" data-background-position="120%">
+            <h3>Nag your users</h3>
             <img src="img/tests.gif">
+            <aside class="notes">
+On the other hand, trust but verify.  It helps to have scripts that check on the host 
+machine.  This one, for example, will not start if the systems code is obviously too old.
+
+Okay, there's a <code>-f</code> option, but my point still stands.
+            </aside>
           </section>
 
         </section>
@@ -613,24 +755,21 @@ Again, benchmark!
         <section>
           <section data-background="img/symbol_reversed.svg" data-background-size="70%" data-background-position="120%">
             <h2>Does it work?</h2>
-            <br>
+          </section>
+
+          <section data-background="img/justchecking.gif">
+            <aside class="notes">
 it does for us.  this january, we hired two new staff members.
 we're a startup.  we don't really have a staff onboarding process.  it's pretty informal.
 so we had brand new still-shrinkwrapped macbook pros.  and using the tools that i've outlined in this
 talk, both people had a complete -- functional -- dev environment, and had both made (trivial) commits
 to our codebase before lunch.  including code reviews.
-
-          </section>
-
-          <section data-background="img/symbol_reversed.svg" data-background-size="70%" data-background-position="120%">
-            <h2>does it work?</h2>
-            <br>
+<br>
 So it takes time up front.  And it you spend a little more time on each pageload in a dev environment.
 But what you get for that, is _vastly_ reduced time building dev environments, and easier production.
-
+<br>
 You don't get this stuff out of the box by just using Vagrant.  
-
-
+            </aside>
           </section>
         </section>
 

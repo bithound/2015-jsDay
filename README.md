@@ -1,1 +1,4 @@
-# Why would we ever build a distributed computing platform in Node?
+# The other side of DevOps:
+## Virtualization to support JavaScript Developers
+
+Presented at jsDay 2015 in Verona, Italy.

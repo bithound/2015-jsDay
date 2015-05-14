@@ -88,6 +88,11 @@ In the 'bad old days', a dev team would finish up, toss a product over the wall 
 who then would then have the curse of deploying it.
 <br>
 Kind of like acme.  Poor Wile E Coyote never knows what he's <em>really</em> going to get next.
+<br>
+It's not the worst ad.  There are plenty of 'Give us the devops.  No, we won't
+change our procedure' type jobs out there, where the 'hopeful' employer thinks
+that devops is just some bandaid they can apply to their current (broken)
+process to make it better.
             </aside>
           </section>
 
@@ -102,9 +107,10 @@ badly.
 As somebody with fifteen years of sysadmin experience, I <em>hate</em> running
 software that's not well maintained upstream.
 <br>
-The goal of DevOps is to get ahead of mere 'sysadmin' concerns.  And that's not
-just a matter of applying developer tools to operations; it's also important to
-bring operations tools and culture into the developer world, early in the development process.
+DevOps is a wholistic approach.  The goal is to get ahead of mere 'sysadmin'
+concerns.  And that's not just a matter of applying developer tools to
+operations; it's also important to bring operations tools and culture into the
+developer world, early in the development process.
             </aside>
           </section>
         </section>
@@ -370,6 +376,13 @@ So we can push it into the background, either on the guest or the host, but we d
 #start app
 vagrant ssh --command "cd /vagrant/app; forever --uid 'app' -a start ./bin/cli server start"
 </pre>
+<hr>
+<pre>
+#!/bin/bash
+
+#stop app
+vagrant ssh --command "forever stop app"
+<pre>
             <aside class="notes">
 And here's a version using 'forever'.  It's a JS tool that's a lot like supervisor.  It's built to manage
 long running processes.  E.g.: start, stop, restart.  Here, it's running inside the guest, but we're managing it 
@@ -640,7 +653,7 @@ RUN scripts/provision.sh
 ADD app /app
 RUN cd /app &amp;&amp; npm install
 
-ENTRYPOINT ["/app/scripts/entrypoint.sh"]
+CMD ["/app/scripts/entrypoint.sh"]
 </pre>
 
             <aside class="notes">
